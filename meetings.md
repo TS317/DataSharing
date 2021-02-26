@@ -1,14 +1,21 @@
 # Meetings notes
 
 ## Meeting 1.
-* **DATE:**
-* **ASSISTANTS:**
+* **DATE:** 2021.02.15
+* **ASSISTANTS:** Mika Oja
 
 ### Minutes
 *Summary of what was discussed during the meeting*
+Discussed some content that need to be fixed:
+1. In the diagram, the authentication concept does not need to be considered.
+2. API uses should tale about what kind of applications will use this API
+3. In related work, the API uses should also talk about what kind of application
+4. Adding some other API description of the proposed example
+
 
 ### Action points
 *List here the actions points discussed with assistants*
+Fix these points mentioned above.
 
 
 ### Comments from staff
