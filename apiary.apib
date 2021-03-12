@@ -151,13 +151,13 @@ The following link relations from the mumeta namespace are used:
 
 #### Data Type Job
 
- * `id`:
- * `user_id`:
- * `created_time`:
- * `job_type`:
- * `status`:
- * `result_id`:
- * `transaction_id`:
+ * `id`: 123
+ * `user_id`: 123
+ * `created_time`: 123
+ * `job_type`: 123
+ * `status`: 123
+ * `result_id`: 123
+ * `transaction_id`: 123
  
 
 
@@ -239,32 +239,754 @@ Get the API entry point
 
 
 # Group Accounts
-## Accounts Collection
-### List All Account
-### Add a New Account
 
-## Account
-### Account Information
-### Edit Account Information
-### Delete Account
+All of these resources use the [Account Profile](reference/profiles/account-profile). 
+In error scenarios [Error Profile](reference/profiles/error-profile) is used.
+
+## Accounts Collection [/api/accounts/]
+
+A list of all accounts known to the API.
+This collection can be sorted using the sortby query parameter.
+
+
+### List all accounts [GET]
+
+Get a list of all accounts known to the API.
+
++ Relation: accounts-all
++ Request
+
+    + Headers
+    
+            Accept: application/vnd.mason+json
+
++ Response 200 (application/vnd.mason+json)
+  
+    + Body
+
+            {
+                "@namespaces": {
+                    "mumeta": {
+                        "name": "/pwp21/link-relations#"
+                    }
+                },
+                "@controls": {
+                    "self": {
+                        "href": "/api/accounts/"
+                    },
+                    "mumeta:artists-all": {
+                        "href": "/api/accounts/",
+                        "title": "All accounts"
+                    },
+                    "mumeta:jobs-all": {
+                        "href": "/api/jobs/",
+                        "title": "All jobs"
+                    }
+                },
+                "items": [
+                {
+                    "id": 1,
+                    "name": "hshi",
+                    "email": "Henglin.Shi@oulu.fi",
+                    "billing_unit": 100,
+                    "registered_time": "2021-01-01"
+                    "@control": {
+                        "self": {
+                            "href": "/api/accounts/hshi"
+                        },
+                        "profile": {
+                            "href": "/profiles/account/"
+                        }
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "hhshi",
+                    "email": "hhshi1@oulu.fi",
+                    "billing_unit": 100,
+                    "registered_time": "2019-12-01",
+                    "@control": {
+                        "self": {
+                            "href": "/api/accounts/hhshi"
+                        },
+                        "profile": {
+                            "href": "/profiles/account/"
+                        }
+                    }
+                }
+              ]
+            }
+
+
+
+
+### Add a new account [POST]
+
+Adds a new account. The account representation must be valid against the account schema.
+
++ Relation: add-account
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/vnd.mason+json
+        
+    + Body
+    
+            {
+                "name": "shih",
+                "email": "shih@oulu.fi",
+                "billing_unit": 0.0,
+                "registered_time": "2020-02-02"
+            }
+
++ Response 201
+
+    + Headers
+    
+            Location: /api/accounts/
+
++ Response 400 (application/vnd.mason+json)
+
+    The client is trying to send a JSON document that doesn't validate against the schema, or has non-existent release date.
+
+    + Body
+    
+            {
+                "resource_url": "/api/accounts/",
+                "@error": {
+                    "@message": "Invalid date format",
+                    "@messages": [
+                        "Release date must be written in ISO format (YYYY-MM-DD)"
+                    ]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
+
++ Response 409 (application/vnd.mason+json)
+
+    The client is trying to add an account with a username that already exists.
+
+    + Body
+    
+            {
+                "resource_url": "/api/accounts/",
+                "@error": {
+                    "@message": "Already exists",
+                    "@messages": [
+                        "Artist 'VA' already has album with title 'Thorns vs Emperor'"
+                    ]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
+    
++ Response 415 (application/vnd.mason+json)
+
+    The client sent a request with the wrong content type or the request body was not valid JSON.
+
+    + Body
+      
+            {
+                "resource_url": "/api/accounts/",
+                "@error": {
+                    "@message": "Unsupported media type",
+                    "@messages": [
+                        "Use JSON"
+                    ]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error-profile/"
+                    }
+                }
+            }
+
+
+
+
+
+## Account [/api/accounts/{account}]
+
+This resource represents an account, 
+as identified by the account unique name. 
+
+
++ Parameters
+
+    + account: hshi (string) - account unique name (name)
+
+
+
+### Account information [GET]
+
++ Relation: self
++ Request
+
+    + Headers
+    
+            Accept: application/vnd.mason+json
+            
+            
++ Response 200 (application/vnd.mason+json)
+
+
+    + Body
+    
+            {
+                "@namespaces": {
+                    "mumeta": {
+                        "name": "/pwp21/link-relations#"
+                    }
+                },
+                "name": "hshi",
+                "email": "Henglin.Shi@oulu.fi",
+                "billing_unit": 600.0,
+                "registered_time": "2020-01-01",
+                "@controls": {
+                    "self": {
+                        "href": "/api/accounts/hshi/"
+                    },
+                    "mumeta:jobs-all": {
+                        "href": "/api/accounts/hshi/jobs/"
+                    },
+                    "edit": {
+                        "href": "/api/accounts/hshi/",
+                        "title": "Edit this account",
+                        "encoding": "json",
+                        "method": "PUT",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "description": "Account email",
+                                    "type": "string"
+                                },
+                            }
+                        }
+                    },
+                    "mumeta:delete": {
+                        "href": "/api/accounts/hshi/",
+                        "title": "Delete this account",
+                        "method": "DELETE"
+                    }
+                }
+            }
+
+
+
+
+### Edit account information [PUT]
+
+
+Replace the account's representation with a new one. 
+Missing optinal fields will be set to null.
+Must validate against the account schema. 
+
+
++ Relation: edit
++ Request (application/json)
+
+    + Headers
+      
+            Accept: application/vnd.mason+json
+        
+    + Body
+    
+            {
+                "name": "hshi",
+                "registered_time": "2014-12-03",
+                "email": "hshi@oulu.fi",
+                "billing_unit": 200.0
+            }
+
++ Response 204
+
+
+
+
+
++ Response 400 (application/vnd.mason+json)
+
+    The client is trying to send a JSON document that doesn't validate against the schema, or has non-existent release date.
+
+    + Body
+    
+            {
+                "resource_url": "/api/account/hshi/",
+                "@error": {
+                    "@message": "Invalid date format",
+                    "@messages": [
+                        "Regisgered date must be written in ISO format (YYYY-MM-DD)"
+                    ]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
+
+
+
++ Response 404 (application/vnd.mason+json)
+
+    The client is trying to edit an account that doesn't exist (due to non-existent account). 
+
+    + Body
+    
+            {
+                "resource_url": "/api/accounts/hshi/",
+                "@error": {
+                    "@message": "Account not found",
+                    "@messages": [null]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
+    
+    
+    
++ Response 409 (application/vnd.mason+json)
+
+    The client is trying to change the account's name to a one that is already in use for the account.
+
+    + Body
+    
+            {
+                "resource_url": "/api/accounts/hshi/",
+                "@error": {
+                    "@message": "Name reserved",
+                    "@messages": [
+                        "Account 'hshi' already in use"
+                    ]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
+    
+    
+    
++ Response 415 (application/vnd.mason+json)
+
+    The client sent a request with the wrong content type or the request body was not valid JSON.
+
+    + Body
+      
+            {
+                "resource_url": "/api/accounts/hshi/",
+                "@error": {
+                    "@message": "Unsupported media type",
+                    "@messages": [
+                        "Use JSON"
+                    ]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error-profile/"
+                    }
+                }
+            }
+
+
+
+
+### Delete account [DELETE]
+Deletes the account, and all associated jobs.
+
+
++ Relation: delete
++ Request
+
+    + Headers
+      
+            Accept: application/vnd.mason+json
+    
++ Response 204
+
+
+
++ Response 404 (application/vnd.mason+json)
+
+    The client is trying to delete an album that doesn't exist (due to non-existent artist or album). 
+
+    + Body
+    
+            {
+                "resource_url": "/api/accounts/hshi/",
+                "@error": {
+                    "@message": "Account not found",
+                    "@messages": [null]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
+
 
 
 # Group Job
-## Jobs Collection
 
-## Jobs by Account
+All of these resources use the [Job Profile](reference/profiles/job-profile). In error scenarios [Error Profile](reference/profiles/error-profile) is used.
 
-## Job
+
+## Jobs Collection [/api/jobs/?sortby={field}]
+
+A list of all jobs known to the API. 
+This collection can be sorted using the sortby query parameter.
+For each job only account name and created_time is included, 
+more information can be found by following the `self` relation of each job. 
+Jobs cannot be directly added to this collection, it only supports GET.
+
++ Parameters
+
+    + field (string, optional) - Field to use for sorting
+        + account: 1  (int) - account's id (user_id)
+        + id: 1 (int) - job's id
+
+
+
+
+
+
+### List all jobs [GET]
+
++ Response 415 (application/vnd.mason+json)
+
+## Jobs by Account [/api/accounts/{account}/jobs/]
+### List jobs by account [GET]
+
++ Response 415 (application/vnd.mason+json)
+
+### Add job for account [POST]
+
++ Response 415 (application/vnd.mason+json)
+
+## Job [/api/accounts/{account}/jobs/{job}/]
+
+
+
+This resource represents a job by a account, 
+as identified by the account's name and the job id. 
+
+
+
++ Parameters
+
+    + account: 1  (int) - account's id (user_id)
+    + id: 1 (int) - job's id
+    
+    
+    
+### Job information [GET]
+
+
+Get the album representation.
+
++ Relation: self
++ Request
+
+    + Headers
+    
+            Accept: application/vnd.mason+json
+    
++ Response 200 (application/vnd.mason+json)
+
+    + Body
+    
+            {
+                "@namespaces": {
+                    "mumeta": {
+                        "name": "/musicmeta/link-relations#"
+                    }
+                },
+                "title": "Hello World",
+                "release": "2014-12-03",
+                "genre": "Pop Rock",
+                "discs": 1,
+                "artist": "Scandal",
+                "@controls": {
+                    "author": {
+                        "href": "/api/artists/scandal/"
+                    },
+                    "mumeta:albums-by": {
+                        "href": "/api/artists/scandal/albums/"
+                    },
+                    "self": {
+                        "href": "/api/artists/scandal/albums/Hello World/"
+                    },
+                    "profile": {
+                        "href": "/profiles/album/"
+                    },
+                    "collection": {
+                        "href": "/api/albums/"
+                    },
+                    "mumeta:artists-all": {
+                        "href": "/api/artists/",
+                        "title": "All artists"
+                    },
+                    "mumeta:add-track": {
+                        "href": "/api/artists/scandal/albums/Hello World/",
+                        "title": "Add a track to this album",
+                        "encoding": "json",
+                        "method": "POST",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "title": {
+                                    "description": "Track title",
+                                    "type": "string"
+                                },
+                                "disc_number": {
+                                    "description": "Disc number",
+                                    "type": "integer",
+                                    "default": 1
+                                },
+                                "track_number": {
+                                    "description": "Track number on disc",
+                                    "type": "integer"
+                                },
+                                "length": {
+                                    "description": "Track length",
+                                    "type": "string",
+                                    "pattern": "^:[0-9]{2}:[0-5][0-9]:[0-5][0-9]$"
+                                }
+                            },
+                            "required": ["title", "track_number", "length"]
+                        }
+                    },
+                    "edit": {
+                        "href": "/api/artists/scandal/albums/Hello World/",
+                        "title": "Edit this album",
+                        "encoding": "json",
+                        "method": "PUT",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "title": {
+                                    "description": "Album title",
+                                    "type": "string"
+                                },
+                                "release": {
+                                    "description": "Release date",
+                                    "type": "string",
+                                    "pattern": "^[0-9]{4}-[01][0-9]-[0-3][0-9]$"
+                                },
+                                "genre": {
+                                    "description": "Album's genre(s)",
+                                    "type": "string"
+                                },
+                                "discs": {
+                                    "description": "Number of discs",
+                                    "type": "integer",
+                                    "default": 1
+                                }
+                            },
+                            "required": ["title", "release"]
+                        }
+                    },
+                    "mumeta:delete": {
+                        "href": "/api/artists/scandal/albums/Hello World/",
+                        "title": "Delete this album",
+                        "method": "DELETE"
+                    }
+                },
+                "items": [
+                    {
+                        "title": "Image",
+                        "length": "00:04:26",
+                        "disc_number": 1,
+                        "track_number": 1,
+                        "@controls": {
+                            "self": {
+                                "href": "/api/artists/scandal/albums/Hello World/1/1/"
+                            },
+                            "profile": {
+                                "href": "/profiles/track/"
+                            }
+                        }
+                    }
+                ]
+            }
+
++ Response 404 (application/vnd.mason+json)
+
+    The client is trying to access an album that doesn't exist (either due to non-existent artist or album).
+
+    + Body
+    
+            {
+                "resource_url": "/api/artists/scandal/albums/Yellow/",
+                "@error": {
+                    "@message": "Album not found",
+                    "@messages": [null]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
+        
+        
+        
+
+
+### Edit job information [PUT]
+
+
+Replace the album's representation with a new one. Missing optinal fields will be set to null. Must validate against the album schema. 
+
++ Relation: edit
++ Request (application/json)
+
+    + Headers
+      
+            Accept: application/vnd.mason+json
+        
+    + Body
+    
+            {
+                "user_id": "1",
+                "created_time": "2014-12-03",
+                "status": "created"
+            }
+    
++ Response 204
+
+
+
+
++ Response 400 (application/vnd.mason+json)
+
+    The client is trying to send a JSON document that doesn't validate against the schema, or has non-existent created date.
+
+    + Body
+    
+            {
+                "resource_url": "/api/accounts/hshi/jobs/1/",
+                "@error": {
+                    "@message": "Invalid date format",
+                    "@messages": [
+                        "Created date must be written in ISO format (YYYY-MM-DD)"
+                    ]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
+
++ Response 404 (application/vnd.mason+json)
+
+    The client is trying to edit a job that doesn't exist (due to non-existent account or job). 
+
+    + Body
+    
+            {
+                "resource_url": "/api/accounts/hshi/jobs/1/",
+                "@error": {
+                    "@message": "Job not found",
+                    "@messages": [null]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
+    
+
+    
++ Response 415 (application/vnd.mason+json)
+
+    The client sent a request with the wrong content type or the request body was not valid JSON.
+
+    + Body
+      
+            {
+                "resource_url": "/api/accounts/hshi/jobs/1/",
+                "@error": {
+                    "@message": "Unsupported media type",
+                    "@messages": [
+                        "Use JSON"
+                    ]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error-profile/"
+                    }
+                }
+            }
+
+
+
+### Delete job [DELETE]
+
+
+Deletes the job, and all associated
+
++ Relation: delete
++ Request
+
+    + Headers
+      
+            Accept: application/vnd.mason+json
+    
++ Response 204
+
++ Response 404 (application/vnd.mason+json)
+
+    The client is trying to delete an job that doesn't exist (due to non-existent job). 
+
+    + Body
+    
+            {
+                "resource_url": "/api/accounts/hshi/jobs/1/",
+                "@error": {
+                    "@message": "job not found",
+                    "@messages": [null]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
+
+
+
+
 
 # Group Transactions
 ## Transactions Collection
+### List all transactions
+### Add a new transaction
 
 ## Transactions by Account
 
 
 
 ## Transaction
-
+### Transaction information
+### Edit transaction
+### Delete transaction
 
 
 # Group Results
