@@ -1,9 +1,141 @@
 FORMAT: 1A
 HOST: https://polls.apiblueprint.org/
 
-# PWP
+# PWP21
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+
+# Group Link Relations
+
+This section described custom link relations defined in this API.
+These are not resources.The API also uses 
+[IANA link relations](http://www.iana.org/assignments/link-relations/link-relations.xhtml) where applicable.
+Custom link relations are CURIEs that use the mumeta prefix. 
+
+
+## add-account
+This is a control that is used to add an account
+to the associated collection resource.
+The control includes a JSON schema and must be accessed with POST. 
+
+## accounts-all
+Leads to the root level accounts
+collection which is a list of all
+accounts known to the API. 
+
+
+
+
+
+## add-job
+This is a control that is used to add a job
+to the associated collection resource.
+The control includes a JSON schema and must be accessed with POST. 
+
+
+
+## jobs-all
+Leads to the root level jobs
+collection which is a list of all jobs 
+known to the API regardless of accounts.
+This collection can be sorted using query parameters as described in the resource documentation.
+
+
+## jobs-of
+Leads to a collection resoruce that includes all jobs
+by the associated account.
+
+
+
+## add-transaction
+This is a control that is used to add a transaction
+to the associated collection resource.
+The control includes a JSON schema and must be accessed with POST. 
+
+
+
+## add-result
+This is a control that is used to add aresult
+to the associated collection resource.
+The control includes a JSON schema and must be accessed with POST. 
+
+## delete
+Deletes the associated resource. Must be accessed with DELETE
+
+## transactions-all
+
+## results-all
+
+
+
+## edit
+
+# Group Profiles
+
+This section includes resource profiles which provide semantic descriptions for the attributes of each resource, 
+as well as the list of controls (by link relation) available from that resource.
+
+## Error Profile
+
+Profile definition for all errors returned by the API.
+See [Mason error control](https://github.com/JornWildt/Mason/blob/master/Documentation/Mason-draft-2.md#property-name-error)
+for more information about errors.
+
++ Attributes
+
+    + resource_url (string, required) - URI of the resource the error was generated from. 
+
+
+## Account Profile
+
+Profile definition for all account related resources.
+
+### Link Relations
+
+This section lists all possible link relations associated with accounts;
+not all of them are necessarily present on each resource type.
+The following link relations from the mumeta namespace are used:
+
+ * [add-account](reference/link-relations/add-account)
+ * [add-job](reference/link-relations/add-job)
+ * [accounts-all](reference/link-relations/accounts-all)
+ * [jobs-all](reference/link-relations/jobs-all)
+ * [delete](reference/link-relations/delete)
+
+<!-- 
+ * [add-album](reference/link-relations/add-album)
+ * [add-track](reference/link-relations/add-track)
+ * [albums-all](reference/link-relations/albums-all)
+ * [albums-va](reference/link-relations/albums-va)
+ * [artists-all](reference/link-relations/artists-all)
+ * [delete](reference/link-relations/delete)
+
+The following [IANA RFC5988](http://www.iana.org/assignments/link-relations/link-relations.xhtml) link relations are also used:
+
+ * author
+ * collection
+ * edit
+ * profile
+ * self
+-->
+### Semantic Descriptors
+
+#### Data Type Album
+
+ * `id`: The id of the account. Ids are unique per account, and are used to address account resources. Mandatory, auto-generated.
+ * `name`: The name of the account. Ids are unique per account, and can also be used to address account resources. Mandatory.
+ * `email`: The email adress of the account, must be a string. Optional.
+ * `billing_unit`: A virtual currecy used for purchasing job execution. Float Type. Default is 0.0
+ * `registered_time`: The registration time of the account in [ISO 8601 format](https://www.iso.org/iso-8601-date-and-time-format.html) (YYYY-MM-DD). Use 01 for month or day if not known. Mandatory.
+
+<!--
+ * `title`: The albums title as it is written on the release, including capitalization and punctuation. Titles are unique per artist, and are used to address album resources. Mandatory.
+ * `release`: Album's release date in [ISO 8601 format](https://www.iso.org/iso-8601-date-and-time-format.html) (YYYY-MM-DD). Use 01 for month or day if not known. Mandatory.
+ * `artist`: The album's artist's name (null for VA albums), including capitalization and pucntuation.
+ * `discs`: Number of discs the album contains. Default is 1.
+ * `genre`: The albums musical genre as a string. Optional.
+-->
+
+
 
 ## Questions Collection [/questions]
 
