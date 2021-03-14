@@ -12,62 +12,64 @@ These are not resources.The API also uses
 Custom link relations are CURIEs that use the mumeta prefix. 
 
 
-## add-account
-This is a control that is used to add an account
-to the associated collection resource.
-The control includes a JSON schema and must be accessed with POST. 
+
 
 ## accounts-all
+
 Leads to the root level accounts
 collection which is a list of all
 accounts known to the API. 
 
 
+## add-account
 
-
-
-## add-job
-This is a control that is used to add a job
+This is a control that is used to add an account
 to the associated collection resource.
 The control includes a JSON schema and must be accessed with POST. 
 
 
-
 ## jobs-all
+
 Leads to the root level jobs
 collection which is a list of all jobs 
 known to the API regardless of accounts.
 This collection can be sorted using query parameters as described in the resource documentation.
 
+## add-job
 
-## jobs-of
-Leads to a collection resoruce that includes all jobs
-by the associated account.
-
-
-
-## add-transaction
-This is a control that is used to add a transaction
+This is a control that is used to add a job
 to the associated collection resource.
 The control includes a JSON schema and must be accessed with POST. 
 
 
+## jobs-by
+Leads to a collection resoruce that includes all jobs
+by the associated account.
 
 ## add-result
 This is a control that is used to add aresult
 to the associated collection resource.
 The control includes a JSON schema and must be accessed with POST. 
 
+## creator
+
+
+Leads to the information of the job associated with selected results.
+
+## up
+Leads to a collection resoruce that includes all results
+by the associated job.
+## edit
+Edit the associated resource. Must be accessed with PUT
 ## delete
 Deletes the associated resource. Must be accessed with DELETE
 
-## transactions-all
-
-## results-all
 
 
 
-## edit
+
+
+
 
 # Group Profiles
 
@@ -95,45 +97,25 @@ This section lists all possible link relations associated with accounts;
 not all of them are necessarily present on each resource type.
 The following link relations from the mumeta namespace are used:
 
+
+ * [accounts-all](reference/link-relations/accounts-all)
  * [add-account](reference/link-relations/add-account)
  * [add-job](reference/link-relations/add-job)
- * [accounts-all](reference/link-relations/accounts-all)
+ * [jobs-by](reference/link-relations/jobs-by)
  * [jobs-all](reference/link-relations/jobs-all)
+ * [edit](reference/link-relations/edit)
  * [delete](reference/link-relations/delete)
 
-<!-- 
- * [add-album](reference/link-relations/add-album)
- * [add-track](reference/link-relations/add-track)
- * [albums-all](reference/link-relations/albums-all)
- * [albums-va](reference/link-relations/albums-va)
- * [artists-all](reference/link-relations/artists-all)
- * [delete](reference/link-relations/delete)
 
-The following [IANA RFC5988](http://www.iana.org/assignments/link-relations/link-relations.xhtml) link relations are also used:
-
- * author
- * collection
- * edit
- * profile
- * self
--->
 ### Semantic Descriptors
 
 #### Data Type Account
 
- * `id`: The id of the account. Ids are unique per account, and are used to address account resources. Mandatory, auto-generated.
  * `name`: The name of the account. Ids are unique per account, and can also be used to address account resources. Mandatory.
  * `email`: The email adress of the account, must be a string. Optional.
  * `billing_unit`: A virtual currecy used for purchasing job execution. Float Type. Default is 0.0
- * `registered_time`: The registration time of the account in [ISO 8601 format](https://www.iso.org/iso-8601-date-and-time-format.html) (YYYY-MM-DD). Use 01 for month or day if not known. Mandatory.
-
-<!--
- * `title`: The albums title as it is written on the release, including capitalization and punctuation. Titles are unique per artist, and are used to address album resources. Mandatory.
- * `release`: Album's release date in [ISO 8601 format](https://www.iso.org/iso-8601-date-and-time-format.html) (YYYY-MM-DD). Use 01 for month or day if not known. Mandatory.
- * `artist`: The album's artist's name (null for VA albums), including capitalization and pucntuation.
- * `discs`: Number of discs the album contains. Default is 1.
- * `genre`: The albums musical genre as a string. Optional.
--->
+ * `registered_time`: The registration time of the account in [ISO 8601 format](https://www.iso.org/iso-8601-date-and-time-format.html) (YYYY-MM-DD). 
+                        Use 01 for month or day if not known. Mandatory.
 
 
 
@@ -142,52 +124,48 @@ The following [IANA RFC5988](http://www.iana.org/assignments/link-relations/link
 This section lists all possible link relations associated with jobs;
 not all of them are necessarily present on each resource type.
 The following link relations from the mumeta namespace are used:
-
+ * [jobs-all](reference/link-relations/jobs-all)
+ * [jobs-by](reference/link-relations/jobs-by)
+ * [accounts-all](reference/link-relations/accounts-all)
  * [add-job](reference/link-relations/add-job)
- * [delete]()
+ * [results-by](reference/link-relations/results-by)
+ * [creator](reference/link-relations/creator)
+ * [edit](reference/link-relations/edit)
+ * [delete](reference/link-relations/delete)
 
 ### Semantic Descriptors
 
 
 #### Data Type Job
 
- * `id`: 123
- * `user_id`: 123
- * `created_time`: 123
- * `job_type`: 123
- * `status`: 123
- * `result_id`: 123
- * `transaction_id`: 123
+ * `id`: uuid. Id of the job
+ * `account`: String. Name of the account
+ * `imageUrl`: String. The Url of the target image of the job.
+ * `status`: String. The status of the job. 
+
  
 
-
-## Transaction Profile
-### Link Relations
- * [add-transaction]()
- * [delete]()
-
-### Semantic Descriptor
-
-#### Data Type Transaction
- * `id`:
- * `start_time`:
- * 'finish_time':
- * `run_time`:
- * `unit_price`:
- * `total_price`:
 
 
 
 ## Result Profile
 ### Link Relations
- * [add-result]()
- * [delete]()
+ * [add-result](reference/link-relations/add-result)
+ * [up](reference/link-relations/up)
+ * [generator](reference/link-relations/generator)
+ * [creator](reference/link-relations/creator)
+ * [edit](reference/link-relations/edit)
+ * [delete](reference/link-relations/delete)
 
 ### Semantic Descriptor
 
-#### Data Type Transaction
- * `id`:
- * `content`:
+#### Data Type Result
+ * `id`: Int. The id of the result
+ * `job`: uuid. Id of the associated job
+ * `upperLeftX`: Int. The x coordinate of the upper left corner detected face
+ * `upperLeftY`: Int. The y coordinate of the upper left corner detected face
+ * `bottomRightX`: Int. The x coordinate of the bottom right corner detected face
+ * `bottomRightX`: Int. The y coordinate of the bottom right corner detected face
 
 
 
@@ -225,12 +203,6 @@ Get the API entry point
                     "mumeta:jobs-all": {
                         "href": "/api/jobs/"
                     }
-                     "mumeta:transactions-all": {
-                        "href": "/api/transactions/"
-                    }
-                     "mumeta:results-all": {
-                        "href": "/api/results/"
-                    }
                 }
             }
 
@@ -240,13 +212,12 @@ Get the API entry point
 
 # Group Accounts
 
-All of these resources use the [Account Profile](reference/profiles/account-profile). 
-In error scenarios [Error Profile](reference/profiles/error-profile) is used.
+
 
 ## Accounts Collection [/api/accounts/]
 
 A list of all accounts known to the API.
-This collection can be sorted using the sortby query parameter.
+
 
 
 ### List all accounts [GET]
@@ -254,11 +225,12 @@ This collection can be sorted using the sortby query parameter.
 Get a list of all accounts known to the API.
 
 + Relation: accounts-all
-+ Request
++ Request 
 
     + Headers
     
             Accept: application/vnd.mason+json
+
 
 + Response 200 (application/vnd.mason+json)
   
@@ -274,22 +246,46 @@ Get a list of all accounts known to the API.
                     "self": {
                         "href": "/api/accounts/"
                     },
-                    "mumeta:artists-all": {
-                        "href": "/api/accounts/",
-                        "title": "All accounts"
-                    },
                     "mumeta:jobs-all": {
                         "href": "/api/jobs/",
                         "title": "All jobs"
+                    },
+                    "mumeta:add-account": {
+                        "href": "/api/accounts/",
+                        "title": "Add a new account",
+                        "encoding": "json",
+                        "method": "POST",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "description": "Account name",
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "description": "Account email",
+                                    "type": "string"
+                                },
+                                "billing_unit": {
+                                    "description": "Virtual currency",
+                                    "type": "float"
+                                },
+                                "registered_time": {
+                                    "description": "Registration time",
+                                    "type": "string",
+                                    "pattern": "^[0-9]{4}-[01][0-9]-[0-3][0-9]$"
+                                }
+                            },
+                            "required": ["name"]
+                        }
                     }
                 },
                 "items": [
                 {
-                    "id": 1,
                     "name": "hshi",
                     "email": "Henglin.Shi@oulu.fi",
                     "billing_unit": 100,
-                    "registered_time": "2021-01-01"
+                    "registered_time": "2021-01-01",
                     "@control": {
                         "self": {
                             "href": "/api/accounts/hshi"
@@ -300,7 +296,6 @@ Get a list of all accounts known to the API.
                     }
                 },
                 {
-                    "id": 2,
                     "name": "hhshi",
                     "email": "hhshi1@oulu.fi",
                     "billing_unit": 100,
@@ -319,10 +314,10 @@ Get a list of all accounts known to the API.
 
 
 
-
 ### Add a new account [POST]
 
-Adds a new account. The account representation must be valid against the account schema.
+Adds a new account.
+The account representation must be valid against the account schema.
 
 + Relation: add-account
 + Request (application/json)
@@ -344,7 +339,7 @@ Adds a new account. The account representation must be valid against the account
 
     + Headers
     
-            Location: /api/accounts/
+            Location: /api/accounts/shih
 
 + Response 400 (application/vnd.mason+json)
 
@@ -378,7 +373,7 @@ Adds a new account. The account representation must be valid against the account
                 "@error": {
                     "@message": "Already exists",
                     "@messages": [
-                        "Artist 'VA' already has album with title 'Thorns vs Emperor'"
+                        "Account name hshi already exist"
                     ]
                 },
                 "@controls": {
@@ -454,8 +449,16 @@ as identified by the account unique name.
                     "self": {
                         "href": "/api/accounts/hshi/"
                     },
-                    "mumeta:jobs-all": {
+                    "mumeta:jobs-by": {
                         "href": "/api/accounts/hshi/jobs/"
+                    },
+                    "mumeta:accounts-all": {
+                        "href": "/api/accounts/"
+                    },
+                    "mumeta:delete": {
+                        "href": "/api/accounts/hshi/",
+                        "title": "Delete this account",
+                        "method": "DELETE"
                     },
                     "edit": {
                         "href": "/api/accounts/hshi/",
@@ -465,22 +468,47 @@ as identified by the account unique name.
                         "schema": {
                             "type": "object",
                             "properties": {
+                                "name": {
+                                    "description": "Account name",
+                                    "type": "string"
+                                },
                                 "email": {
                                     "description": "Account email",
                                     "type": "string"
                                 },
+                                "billing_unit": {
+                                    "description": "Virtual currency",
+                                    "type": "float"
+                                },
+                                "registered_time": {
+                                    "description": "Registration time",
+                                    "type": "string",
+                                    "pattern": "^[0-9]{4}-[01][0-9]-[0-3][0-9]$"
+                                }
                             }
                         }
-                    },
-                    "mumeta:delete": {
-                        "href": "/api/accounts/hshi/",
-                        "title": "Delete this account",
-                        "method": "DELETE"
                     }
                 }
             }
 
++ Response 404 (application/vnd.mason+json)
 
+    The client is trying to access an account that doesn't exist.
+
+    + Body
+    
+            {
+                "resource_url": "/api/accounts/",
+                "@error": {
+                    "@message": "Account not found",
+                    "@messages": [null]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
 
 
 ### Edit account information [PUT]
@@ -543,7 +571,7 @@ Must validate against the account schema.
     + Body
     
             {
-                "resource_url": "/api/accounts/hshi/",
+                "resource_url": "/api/accounts/shih/",
                 "@error": {
                     "@message": "Account not found",
                     "@messages": [null]
@@ -564,11 +592,11 @@ Must validate against the account schema.
     + Body
     
             {
-                "resource_url": "/api/accounts/hshi/",
+                "resource_url": "/api/accounts/shih/",
                 "@error": {
                     "@message": "Name reserved",
                     "@messages": [
-                        "Account 'hshi' already in use"
+                        "Account name already in use"
                     ]
                 },
                 "@controls": {
@@ -621,7 +649,7 @@ Deletes the account, and all associated jobs.
 
 + Response 404 (application/vnd.mason+json)
 
-    The client is trying to delete an album that doesn't exist (due to non-existent artist or album). 
+    The client is trying to delete an account that doesn't exist (due to non-existent account). 
 
     + Body
     
@@ -666,16 +694,354 @@ Jobs cannot be directly added to this collection, it only supports GET.
 
 ### List all jobs [GET]
 
-+ Response 415 (application/vnd.mason+json)
+Get a list of all jobs known to the API.
+
++ Relation: jobs-all
++ Request
+
+    + Headers
+    
+            Accept: application/vnd.mason+json
+
+
+
++ Response 200 (application/vnd.mason+json)
+  
+    + Body
+
+            {
+                "@namespaces": {
+                    "mumeta": {
+                        "name": "/musicmeta/link-relations#"
+                    }
+                },
+                "@controls": {
+                    "self": {
+                        "href": "/api/jobs/"
+                    },
+                },
+                "items": [
+                    {
+                        "id": "1868b10f-0a92-4948-a4f2-1ec0723d7a6a",
+                        "account": "hshi",
+                        "imageUrl": "https://oulu.fi"
+                        "status": "PENDING"
+                        "@controls": 
+                        {
+                            "self": 
+                            {
+                                "href": "/api/accounts/hshi/1868b10f-0a92-4948-a4f2-1ec0723d7a6a/"
+                            }, 
+                            "profile": 
+                            {
+                                "href": "/profiles/job/"
+                            }
+                        }
+                    }, 
+                    {
+                        "id": "0409041e-39ab-4017-b686-6b0e8f621248",
+                        "account": "shih",
+                        "imageUrl": "https://oulu.fi/11"
+                        "status": "PENDING"
+                        "@controls": 
+                        {
+                            "self": 
+                            {
+                                "href": "/api/accounts/shih/0409041e-39ab-4017-b686-6b0e8f621248/"
+                            }, 
+                            "profile": 
+                            {
+                                "href": "/profiles/job/"
+                            }
+                        }
+                    }
+                ]
+            }
+
+
 
 ## Jobs by Account [/api/accounts/{account}/jobs/]
++ Parameters
+    + account: hshi (string) - account's unique id (name)
+
+
 ### List jobs by account [GET]
 
-+ Response 415 (application/vnd.mason+json)
+Get a list of jobs by an accounts.
+
++ Relation: jobs-by
++ Request
+
+    + Headers
+    
+            Accept: application/vnd.mason+json
+    
++ Response 200 (application/vnd.mason+json)
+
+    + Body
+    
+            {
+                "@namespaces": {
+                    "mumeta": {
+                        "name": "/pwp21/link-relations#"
+                    }
+                }, 
+                "@controls": {
+                    "self": {
+                        "href": "/api/accounts/hshi/jobs/"
+                    },
+                    "mumeta:accounts-all": {
+                        "href": "/api/accounts/",
+                        "title": "All accounts"
+                    },                    
+                    "mumeta:jobs-all": {
+                        "href": "/api/jobs/?{sortby}",
+                        "title": "All jobs",
+                        "isHrefTemplate": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "sortby": {
+                                    "description": "Field to use for sorting",
+                                    "type": "string",
+                                    "default": "created_time",
+                                    "enum": ["status", "created_time"]
+                                }
+                            },
+                            "required": []
+                        }
+                    },                    
+                    "creator": {
+                        "href": "/api/accounts/hshi/"
+                    },
+                    "mumeta:add-job": {
+                        "href": "/api/accounts/hshi/jobs/",
+                        "title": "This account submites a new job",
+                        "encoding": "json",
+                        "method": "POST",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "description": "job uuid",
+                                    "type": "string"
+                                },
+                                "account": {
+                                    "description": "account unique name",
+                                    "type": "string"
+                                },
+                                "imageUrl": {
+                                    "description": "Url of the image to be processed",
+                                    "type": "sting",
+                                    "default": 1
+                                },
+                                "created_time": {
+                                    "description": "Release date",
+                                    "type": "string",
+                                    'pattern': '^[0-9]{8}-[0-9]{2}:[0-9]{2}:[0-9]{2}$'
+                                }
+                            },
+                            "required": ["id", "account", "imageUrl", "created_time"]
+                        }
+                    }
+                },
+               "items": [
+                    {
+                        "id": "1868b10f-0a92-4948-a4f2-1ec0723d7a6a",
+                        "account": "hshi",
+                        "imageUrl": "https://oulu.fi",
+                        "status": "PENDING",
+                        "@controls": 
+                        {
+                            "self": 
+                            {
+                                "href": "/api/accounts/hshi/1868b10f-0a92-4948-a4f2-1ec0723d7a6a/"
+                            }, 
+                            "profile": 
+                            {
+                                "href": "/profiles/job/"
+                            }
+                        }
+                    }, 
+                    {
+                        "id": "0409041e-39ab-4017-b686-6b0e8f621248",
+                        "account": "hshi",
+                        "imageUrl": "https://oulu.fi/11",
+                        "status": "PENDING",
+                        "@controls": 
+                        {
+                            "self": 
+                            {
+                                "href": "/api/accounts/hshi/0409041e-39ab-4017-b686-6b0e8f621248/"
+                            }, 
+                            "profile": 
+                            {
+                                "href": "/profiles/job/"
+                            }
+                        }
+                    }
+                ]
+            }
+
++ Response 404 (application/vnd.mason+json)
+
+    The client is trying to retrieve list of jobs for an account that doesn't exist.
+
+    + Body
+    
+      
+            {
+                "resource_url": "/api/accounts/nobody/jobs/",
+                "@error": {
+                    "@message": "Account not found",
+                    "@messages": [null]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
 
 ### Add job for account [POST]
 
+Adds a new job for the account.
+The job representation must be valid against the job schema.
+
++ Relation: add-job
++ Request (application/json)
+
+    + Headers
+
+            Accept: application/vnd.mason+json
+        
+    + Body
+    
+            {
+                "id": "1868b10f-0a92-4948-a4f2-1ec0723d7a6a",
+                "account": "hshi",
+                "imageUrl": "https://oulu.fi"
+                "status": "PENDING"
+                "created_time": "20200314-12:23:35"
+            }
+
++ Response 201
+
+    + Headers
+    
+            Location: /api/accounts/hshi/jobs/1868b10f-0a92-4948-a4f2-1ec0723d7a6a/
+
++ Response 400 (application/vnd.mason+json)
+
+    The client is trying to send a JSON document that doesn't validate against the schema, or has non-existent created time.
+
+    + Body
+    
+            {
+                "resource_url": "/api/accounts/hshi/job/",
+                "@error": {
+                    "@message": "Invalid JSON document",
+                    "@messages": [                    
+                        "'created_time' is a required property
+                        
+                        Failed validating 'required' in schema:
+                        {
+                            'properties': 
+                            {
+                                'id': 
+                                {   
+                                    'description': 'uuid of the job',
+                                    'type': 'string'
+                                },
+                                'account': 
+                                {  
+                                    'description': \"account name\",
+                                    'type': 'string'
+                                },
+                                'image_url': 
+                                {
+                                    'description': 'image url',
+                                    'type': 'string'
+                                },
+                                'created_time': 
+                                {
+                                    'description': 'created_time',
+                                    'pattern': '^[0-9]{8}-[0-9]{2}:[0-9]{2}:[0-9]{2}$',
+                                    'type': 'string'
+                                }
+                            },
+                            
+                            "required": ["id", "account", "imageUrl", "created_time"],
+                            'type': 'object'
+                        }
+                        
+                        On instance:
+                        {
+                            'job': '1868b10f-0a92-4948-a4f2-1ec0723d7a6a'
+                        }"
+                    ]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
+
++ Response 404 (application/vnd.mason+json)
+
+    The client is trying to add a job for an account that doesn't exist.
+    But I think actually it will not happen
+
+    + Body
+    
+            {
+                "resource_url": "/api/accounts/hshi/jobs/",
+                "@error": {
+                    "@message": "account not found",
+                    "@messages": [null]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
+
++ Response 409 (application/vnd.mason+json)
+
+    The client is trying to add an job with a id that's already used by another job.
+    But actually this will no happen
+    
+    + Body
+    
+    
+    
+
+
+
+
 + Response 415 (application/vnd.mason+json)
+
+    The client did not use the proper content type, or the request body was not valid JSON.
+
+    + Body
+      
+            {
+                "resource_url": "/api/accounts/hshi/jobs/",
+                "@error": {
+                    "@message": "Unsupported media type",
+                    "@messages": [
+                        "Use JSON"
+                    ]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error-profile/"
+                    }
+                }
+            }
+        
 
 ## Job [/api/accounts/{account}/jobs/{job}/]
 
@@ -687,10 +1053,10 @@ as identified by the account's name and the job id.
 
 
 + Parameters
-
-    + account: 1  (int) - account's id (user_id)
-    + id: 1 (int) - job's id
     
+    + job: 1 (int) - job's id (id)
+    + account: 1  (int) - account's id (user_id)
+
     
     
 ### Job information [GET]
@@ -712,112 +1078,125 @@ Get the album representation.
             {
                 "@namespaces": {
                     "mumeta": {
-                        "name": "/musicmeta/link-relations#"
+                        "name": "/pwp21/link-relations#"
                     }
                 },
-                "title": "Hello World",
-                "release": "2014-12-03",
-                "genre": "Pop Rock",
-                "discs": 1,
-                "artist": "Scandal",
+                "id": "0409041e-39ab-4017-b686-6b0e8f621248",
+                "account": "hshi",
+                "imageUrl": "https://oulu.fi",
+                "status": "FINISHED"
                 "@controls": {
-                    "author": {
-                        "href": "/api/artists/scandal/"
+                    "creater": 
+                    {
+                        "href": "/api/accounts/hshi/"
                     },
-                    "mumeta:albums-by": {
-                        "href": "/api/artists/scandal/albums/"
+                    "mumeta:jobs-all": 
+                    {
+                        "href": "/api/jobs/"
                     },
-                    "self": {
-                        "href": "/api/artists/scandal/albums/Hello World/"
+                    "profile": 
+                    {
+                        "href": "/profiles/job/"
                     },
-                    "profile": {
-                        "href": "/profiles/album/"
+                    "collection": 
+                    {
+                        "href": "/api/jobs/"
                     },
-                    "collection": {
-                        "href": "/api/albums/"
-                    },
-                    "mumeta:artists-all": {
-                        "href": "/api/artists/",
-                        "title": "All artists"
-                    },
-                    "mumeta:add-track": {
-                        "href": "/api/artists/scandal/albums/Hello World/",
-                        "title": "Add a track to this album",
+                    "mumeta:jobs-by": 
+                    {
+                        "href": "/api/accounts/hshi/jobs/"
+                    }
+                    "mumeta:add-result": 
+                    {
+                        "href": "/api/accounts/hshi/jobs/21igu312iyg312iuyg3/results/",
+                        "title": "Add a result to this job",
                         "encoding": "json",
                         "method": "POST",
                         "schema": {
                             "type": "object",
                             "properties": {
-                                "title": {
-                                    "description": "Track title",
+                                "id": {
+                                    "description": "result id",
+                                    "type": "int"
+                                },
+                                "job": {
+                                    "description": "associated job id",
                                     "type": "string"
                                 },
-                                "disc_number": {
-                                    "description": "Disc number",
-                                    "type": "integer",
-                                    "default": 1
-                                },
-                                "track_number": {
-                                    "description": "Track number on disc",
+                                "upperLeftX": {
+                                    "description": "upperLeftX",
                                     "type": "integer"
                                 },
-                                "length": {
-                                    "description": "Track length",
-                                    "type": "string",
-                                    "pattern": "^:[0-9]{2}:[0-5][0-9]:[0-5][0-9]$"
+                                "upperLeftY": {
+                                    "description": "upperLeftY",
+                                    "type": "integer"
+                                },
+                                "bottomRightX": {
+                                    "description": "bottomRightX",
+                                    "type": "integer"
+                                },
+                                "bottomRightY": {
+                                    "description": "bottomRightY",
+                                    "type": "integer"
                                 }
                             },
-                            "required": ["title", "track_number", "length"]
+                            "required": ["id", "job", "upperLeftX", "upperLeftY", "bottomRightY", "bottomRightY"]
                         }
-                    },
-                    "edit": {
-                        "href": "/api/artists/scandal/albums/Hello World/",
-                        "title": "Edit this album",
+                    }
+                    "edit": 
+                    {
+                        "href": "/api/accounts/hshi/jobs/21igu312iyg312iuyg3/",
+                        "title": "Edit this job",
                         "encoding": "json",
                         "method": "PUT",
                         "schema": {
                             "type": "object",
                             "properties": {
-                                "title": {
-                                    "description": "Album title",
+                                "id": {
+                                    "description": "job id",
                                     "type": "string"
                                 },
-                                "release": {
-                                    "description": "Release date",
+                                "account": {
+                                    "description": "asscoiated job",
+                                    "type": "string"
+                                },
+                                "imageUrl": {
+                                    "description": "imageurl",
                                     "type": "string",
-                                    "pattern": "^[0-9]{4}-[01][0-9]-[0-3][0-9]$"
                                 },
-                                "genre": {
-                                    "description": "Album's genre(s)",
+                                "status": {
+                                    "description": "Job status",
                                     "type": "string"
-                                },
-                                "discs": {
-                                    "description": "Number of discs",
-                                    "type": "integer",
-                                    "default": 1
                                 }
                             },
-                            "required": ["title", "release"]
+                            "required": ["id", "account", "imageUrl", "status"]
                         }
                     },
-                    "mumeta:delete": {
-                        "href": "/api/artists/scandal/albums/Hello World/",
+                    "mumeta:delete": 
+                    {
+                        "href": "/api/accounts/hshi/jobs/21igu312iyg312iuyg3"
                         "title": "Delete this album",
                         "method": "DELETE"
                     }
                 },
                 "items": [
+                
                     {
-                        "title": "Image",
-                        "length": "00:04:26",
-                        "disc_number": 1,
-                        "track_number": 1,
-                        "@controls": {
-                            "self": {
-                                "href": "/api/artists/scandal/albums/Hello World/1/1/"
-                            },
-                            "profile": {
-                                "href": "/profiles/track/"
+                        "id": "00001",
+                        "job": "21igu312iyg312iuyg3",
+                        "upperLeftX": 12,
+                        "upperLeftY": 22,
+                        "bottomRightY": 66,
+                        "bottomRightY": 77,
+                        "@controls": 
+                        {
+                            "self": 
+                            {
+                                "href": "/api/accounts/hshi/jobs/21igu312iyg312iuyg3/results/00001"
+                            }, 
+                            "profile": 
+                            {
+                                "href": "/profiles/result/"
                             }
                         }
                     }
@@ -826,14 +1205,14 @@ Get the album representation.
 
 + Response 404 (application/vnd.mason+json)
 
-    The client is trying to access an album that doesn't exist (either due to non-existent artist or album).
+    The client is trying to access an job that doesn't exist (either due to non-existent job or account).
 
     + Body
     
             {
-                "resource_url": "/api/artists/scandal/albums/Yellow/",
+                "resource_url": "/api/accounts/hshi/jobs/1868b10f-0a92-4948-a4f2-1ec0723d7a6a/",
                 "@error": {
-                    "@message": "Album not found",
+                    "@message": "Job not found",
                     "@messages": [null]
                 },
                 "@controls": {
@@ -850,7 +1229,9 @@ Get the album representation.
 ### Edit job information [PUT]
 
 
-Replace the album's representation with a new one. Missing optinal fields will be set to null. Must validate against the album schema. 
+Replace the job's representation with a new one. 
+Missing optinal fields will be set to null. 
+Must validate against the job schema. 
 
 + Relation: edit
 + Request (application/json)
@@ -862,9 +1243,11 @@ Replace the album's representation with a new one. Missing optinal fields will b
     + Body
     
             {
-                "user_id": "1",
-                "created_time": "2014-12-03",
-                "status": "created"
+                "id": "1868b10f-0a92-4948-a4f2-1ec0723d7a6a",
+                "account": "hshi",
+                "imageUrl": "https://oulu.fi",
+                "status": "PENDING",
+                "created_time": "20200202-12:33:33"
             }
     
 + Response 204
@@ -879,11 +1262,11 @@ Replace the album's representation with a new one. Missing optinal fields will b
     + Body
     
             {
-                "resource_url": "/api/accounts/hshi/jobs/1/",
+                "resource_url": "/api/accounts/hshi/jobs/1868b10f-0a92-4948-a4f2-1ec0723d7a6a/",
                 "@error": {
                     "@message": "Invalid date format",
                     "@messages": [
-                        "Created date must be written in ISO format (YYYY-MM-DD)"
+                        "Created date must be written in format (YYYYMMDD-HH:MM:SS)"
                     ]
                 },
                 "@controls": {
@@ -900,7 +1283,7 @@ Replace the album's representation with a new one. Missing optinal fields will b
     + Body
     
             {
-                "resource_url": "/api/accounts/hshi/jobs/1/",
+                "resource_url": "/api/accounts/nobody/jobs/1868b10f-0a92-4948-a4f2-1ec0723d7a6a/",
                 "@error": {
                     "@message": "Job not found",
                     "@messages": [null]
@@ -921,7 +1304,7 @@ Replace the album's representation with a new one. Missing optinal fields will b
     + Body
       
             {
-                "resource_url": "/api/accounts/hshi/jobs/1/",
+                "resource_url": "/api/accounts/hshi/jobs/1868b10f-0a92-4948-a4f2-1ec07222a6a/",
                 "@error": {
                     "@message": "Unsupported media type",
                     "@messages": [
@@ -940,7 +1323,7 @@ Replace the album's representation with a new one. Missing optinal fields will b
 ### Delete job [DELETE]
 
 
-Deletes the job, and all associated
+Deletes the job, and all associated results
 
 + Relation: delete
 + Request
@@ -958,7 +1341,7 @@ Deletes the job, and all associated
     + Body
     
             {
-                "resource_url": "/api/accounts/hshi/jobs/1/",
+                "resource_url": "/api/accounts/hshi/jobs/1868b10f-0a92-4948-a4f2-1ec0723d7a6a/",
                 "@error": {
                     "@message": "job not found",
                     "@messages": [null]
@@ -971,109 +1354,533 @@ Deletes the job, and all associated
             }
 
 
-
-
-
-# Group Transactions
-## Transactions Collection
-### List all transactions
-### Add a new transaction
-
-## Transactions by Account
-
-
-
-## Transaction
-### Transaction information
-### Edit transaction
-### Delete transaction
-
-
 # Group Results
-## Results Collection
 
-## Results by Account
-
-
-## Result
+## Results of Job [/api/accounts/{account}/jobs/{job}/results/]
+This is a job collection by given account and job using the account's unique name and job's unique id 
 
 
 
++ Parameters
+    + account: hshi (string) - account's unique id (name)
+    + job: 1868b10f-0a92-4948-a4f2-1ec0723d7a6a (string) - job's unique id (id)
 
 
+    
+    
+### List all results by job [GET]
 
 
+Get a list of results by a job.
 
-## Questions Collection [/questions]
 
-### List All Questions [GET]
++ Relation: results-by
 
-+ Response 200 (application/json)
++ Request
+    + Headers
+    
+            Accept: application/vnd.mason+json
+    
 
-        [
++ Response 200
+
+
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
+                "@namespaces": {
+                    "mumeta": {
+                        "name": "/musicmeta/link-relations#"
+                    }
+                },
+                "@controls": {
+                    "self": {
+                        "href": "/api/albums/"
+                    },
+                    "mumeta:generator": {
+                        "href": "/api/accounts/hshi/jobs/1868b10f-0a92-4948-a4f2-1ec0723d7a6a/",
+                        "title": "The job of the results associated"
+                    },
+                    "mumeta:creator": {
+                        "href": "/api/accounts/hshi/",
+                        "title": "The account the result associated"
+                    },
+                    "mumeta:add-result": {
+                        "href": "/api/accounts/hshi/jobs/1868b10f-0a92-4948-a4f2-1ec0723d7a6a/results/",
+                        "title": "Add a new result to the job",
+                        "encoding": "json",
+                        "method": "POST",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "description": "Album title",
+                                    "type": "string"
+                                },
+                                "job": {
+                                    "description": "associated job id",
+                                    "type": "string"
+                                },
+                                "upperLeftX": {
+                                    "description": "upperLeftX",
+                                    "type": "integer"
+                                },
+                                "upperLeftY": {
+                                    "description": "upperLeftY",
+                                    "type": "integer"
+                                },
+                                "bottomRightX": {
+                                    "description": "bottomRightX",
+                                    "type": "integer"
+                                },
+                                "bottomRightY": {
+                                    "description": "bottomRightY",
+                                    "type": "integer"
+                                }
+                            },
+                            "required": ["id", "job", "upperLeftX", "upperLeftY", "bottomRightY", "bottomRightY"]
+                        }
+                        
+                        
+                    }
+                },
+                "items": [
                     {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
+                        "title": "Hello World",
+                        "artist": "Scandal",
+                        "@controls": {
+                            "self": {
+                                "href": "/api/artists/scandal/Hello World/"
+                            }, 
+                            "profile": {
+                                "href": "/profiles/album/"
+                            }
+                        },
+                    }, 
+                    {
+                        "id": "00001",
+                        "job": "21igu312iyg312iuyg3",
+                        "upperLeftX": 12,
+                        "upperLeftY": 22,
+                        "bottomRightY": 66,
+                        "bottomRightY": 77,
+                        "@controls": 
+                        {
+                            "self": 
+                            {
+                                "href": "/api/accounts/hshi/jobs/1868b10f-0a92-4948-a4f2-1ec0723d7a6a/results/00001"
+                            }, 
+                            "profile": 
+                            {
+                                "href": "/profiles/result/"
+                            }
+                        },
+                        
+                        "id": "00002",
+                        "job": "21igu312iyg312iuyg3",
+                        "upperLeftX": 33,
+                        "upperLeftY": 22,
+                        "bottomRightY": 33,
+                        "bottomRightY": 44,
+                        "@controls": 
+                        {
+                            "self": 
+                            {
+                                "href": "/api/accounts/hshi/jobs/1868b10f-0a92-4948-a4f2-1ec0723d7a6a/results/00002"
+                            }, 
+                            "profile": 
+                            {
+                                "href": "/profiles/result/"
+                            }
+                        }
                     }
                 ]
             }
-        ]
 
-### Create a New Question [POST]
++ Response 404 (application/vnd.mason+json)
 
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
+    The client is trying to retrieve list of results for a job that doesn't exist.
 
+    + Body
+    
+      
+            {
+                "resource_url": "/api/accounts/hshi/jobs/1868b10f-0a92-4948-a4f2-1ec0723ss/results/",
+                "@error": {
+                    "@message": "Jobs not found",
+                    "@messages": [null]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
+
+
+
+
+### Add a result for job [POST]
+
+
+Adds a new result for the job. The result representation must be valid against the result schema.
+
++ Relation: add-album
 + Request (application/json)
-
-        {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
-        }
-
-+ Response 201 (application/json)
 
     + Headers
 
-            Location: /questions/2
+            Accept: application/vnd.mason+json
+        
+    + Body
+    
+            {
+                "id": "00002",
+                "job": "21igu312iyg312iuyg3",
+                "upperLeftX": 33,
+                "upperLeftY": 22,
+                "bottomRightY": 33,
+                "bottomRightY": 44,
+            }
+
++ Response 201
+
+    + Headers
+    
+            Location: /api/accounts/hshi/jobs/21igu312iyg312iuyg3/results/00002
+
++ Response 400 (application/vnd.mason+json)
+
+    The client is trying to send a JSON document that doesn't validate against the schema.
 
     + Body
-
+    
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
+                "resource_url": "/api/accounts/hshi/jobs/21igu312iyg312iuyg3/results/",
+                "@error": {
+                    "@message": "Invalid JSON document"
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
                     }
-                ]
+                }
+            }
+
++ Response 404 (application/vnd.mason+json)
+
+    The client is trying to add a result for a job that doesn't exist.
+
+    + Body
+    
+            {
+                "resource_url": "/api/accounts/hshi/jobs/nojob/results/",
+                "@error": {
+                    "@message": "job not found",
+                    "@messages": [null]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
+
++ Response 409 (application/vnd.mason+json)
+
+    The client is trying to add a result with a id that's already used by another result for the same artist.
+
+    + Body
+    
+            {
+                "resource_url": "/api/accounts/hshi/jobs/nojob/results/",
+                "@error": {
+                    "@message": "Reuslt id used",
+                    "@messages": [
+                        "Result '00001' already existed in the result list"
+                    ]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
+        
+
++ Response 415 (application/vnd.mason+json)
+
+    The client did not use the proper content type, or the request body was not valid JSON.
+
+    + Body
+      
+            {
+                "resource_url": "/api/accounts/hshi/jobs/nojob/results/",
+                "@error": {
+                    "@message": "Unsupported media type",
+                    "@messages": [
+                        "Use JSON"
+                    ]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error-profile/"
+                    }
+                }
+            }
+
+
+
+## Result [/api/accounts/{account}/jobs/{job}/results/{result}]
+
+This resource represents a result, 
+as identified by the account' name and job's id. 
+
++ Parameters
+
+    + account: hshi (string) - account's name (name)
+    + job: 1868b10f-0a92-4948-a4f2-1ec0723ss(string) - job's (id)
+
+### Result information [GET]
+
+Get the result representation.
+
++ Relation: self
++ Request
+
+    + Headers
+    
+            Accept: application/vnd.mason+json
+    
++ Response 200 (application/vnd.mason+json)
+
+    + Body
+    
+            {
+                "@namespaces": {
+                    "mumeta": {
+                        "name": "/pwp21/link-relations#"
+                    }
+                },
+                "id": "00002",
+                "job": "1868b10f-0a92-4948-a4f2-1ec0723ss",
+                "upperLeftX": 33,
+                "upperLeftY": 22,
+                "bottomRightY": 33,
+                "bottomRightY": 44,
+                "@controls": {
+                    "self": {
+                        "href": "/api/accounts/hshi/jobs/1868b10f-0a92-4948-a4f2-1ec0723ss/results/00002/"
+                        },
+                    "up": {
+                        "href": "/api/accounts/hshi/jobs/1868b10f-0a92-4948-a4f2-1ec0723ss/results/
+                    },
+                    "creator": {
+                        "href": "/api/accounts/hshi/
+                    },
+                    "profile": {
+                        "href": "/profiles/result/"
+                    },
+                    "edit": {
+                        "href": "/api/accounts/hshi/jobs/1868b10f-0a92-4948-a4f2-1ec0723ss/results/00002/",
+                        "title": "Edit this result",
+                        "encoding": "json",
+                        "method": "PUT",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "description": "Album title",
+                                    "type": "string"
+                                },
+                                "job": {
+                                    "description": "associated job id",
+                                    "type": "string"
+                                },
+                                "upperLeftX": {
+                                    "description": "upperLeftX",
+                                    "type": "integer"
+                                },
+                                "upperLeftY": {
+                                    "description": "upperLeftY",
+                                    "type": "integer"
+                                },
+                                "bottomRightX": {
+                                    "description": "bottomRightX",
+                                    "type": "integer"
+                                },
+                                "bottomRightY": {
+                                    "description": "bottomRightY",
+                                    "type": "integer"
+                                }
+                            },
+                            "required": ["id", "job", "upperLeftX", "upperLeftY", "bottomRightY", "bottomRightY"]
+                        }
+                    },
+                    "mumeta:delete": {
+                        "href":  "/api/accounts/hshi/jobs/1868b10f-0a92-4948-a4f2-1ec0723ss/results/00002/",
+                        "title": "Delete this album",
+                        "method": "DELETE"
+                    }
+                }
+            }
+
++ Response 404 (application/vnd.mason+json)
+
+    The client is trying to access a result that doesn't exist (either due to non-existent result or job).
+
+    + Body
+    
+            {
+                "resource_url": "/api/accounts/hshi/jobs/1868b10f-0a92-4948-a4f2-1ec0723ss/results/00005/",
+                "@error": {
+                    "@message": "result not found",
+                    "@messages": [null]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
+
+
+### Edit result information [PUT]
+
+Replace the result's representation with a new one. 
+Missing optinal fields will be set to null. Must validate against the result schema. 
+
++ Relation: edit
++ Request (application/json)
+
+    + Headers
+      
+            Accept: application/vnd.mason+json
+        
+    + Body
+    
+            {
+                "id": "00002",
+                "job": "1868b10f-0a92-4948-a4f2-1ec0723ss",
+                "upperLeftX": 33,
+                "upperLeftY": 22,
+                "bottomRightY": 33,
+                "bottomRightY": 44
+            }
+    
++ Response 204
+
+
++ Response 400 (application/vnd.mason+json)
+
+    The client is trying to send a JSON document that doesn't validate against the schema,.
+
+    + Body
+    
+            {
+                "resource_url": "/api/accounts/hshi/jobs/1868b10f-0a92-4948-a4f2-1ec0723ss/results/00002/",
+                "@error": {
+                    "@message": "Invalid JSON document"
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
+
+
+
+
+
++ Response 404 (application/vnd.mason+json)
+
+    The client is trying to edit an result that doesn't exist (due to non-existent result or job). 
+
+    + Body
+    
+            {
+                "resource_url": "/api/accounts/hshi/jobs/1868b10f-0a92-4948-a4f2-1ec0723ss/results/00002/",
+                "@error": {
+                    "@message": "result not found",
+                    "@messages": [null]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
+    
++ Response 409 (application/vnd.mason+json)
+
+    The client is trying to change the result's id to a one that is already in use .
+
+    + Body
+    
+            {
+                "resource_url": "/api/accounts/hshi/jobs/1868b10f-0a92-4948-a4f2-1ec0723ss/results/00005/",
+                "@error": {
+                    "@message": "id in use",
+                    "@messages": [
+                        "the reuslt up is in use"
+                    ]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
+            }
+    
++ Response 415 (application/vnd.mason+json)
+
+    The client sent a request with the wrong content type or the request body was not valid JSON.
+
+    + Body
+      
+            {
+                "resource_url": "/api/accounts/hshi/jobs/1868b10f-0a92-4948-a4f2-1ec0723ss/results/00002/",
+                "@error": {
+                    "@message": "Unsupported media type",
+                    "@messages": [
+                        "Use JSON"
+                    ]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error-profile/"
+                    }
+                }
+            }
+
+
+
+### Delete result [DELETE]
+Deletes the result.
+
++ Relation: delete
++ Request
+
+    + Headers
+      
+            Accept: application/vnd.mason+json
+    
++ Response 204
+
++ Response 404 (application/vnd.mason+json)
+
+    The client is trying to delete an result that doesn't exist (due to non-existent job or results). 
+
+    + Body
+    
+            {
+                "resource_url": "/api/accounts/hshi/jobs/1868b10f-0a92-4948-a4f2-1ec0723ss/results/00002/",
+                "@error": {
+                    "@message": "result not found",
+                    "@messages": [null]
+                },
+                "@controls": {
+                    "profile": {
+                        "href": "/profiles/error/"
+                    }
+                }
             }
